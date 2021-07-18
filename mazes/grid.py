@@ -1,44 +1,5 @@
-#!/usr/bin/env python3
 
-from random import randint
-
-class Cell():
-    def __init__(self, row, column):
-        self.row    = row
-        self.column = column
-        self.links  = {}
-        self.north  = False
-        self.south  = False
-        self.east   = False
-        self.west   = False
-
-    def link(self, cell, bidi = True):
-        self.links[cell] = True
-        if bidi:
-            cell.link(self, False)
-
-    def unlink(self, cell, bidi = True):
-        del self.links[cell]
-        if bidi:
-            cell.unlink(self, False)
-
-    def links(self):
-        return list(self.links.keys())
-
-    def is_linked(self, cell):
-        return cell in self.links and self.links[cell]
-    
-
-    def neighbors(self):
-        list = []
-        if self.north: list.append(self.north)
-        if self.south: list.append(self.south)
-        if self.east:  list.append(self.east)
-        if self.west:  list.append(self.west)
-        return list
-
-    def __repr__(self):
-        return f'({self.row},{self.column})'
+from .cell import Cell
 
 class Grid():
     def __init__(self, rows, columns):
@@ -49,9 +10,9 @@ class Grid():
 
     def __getitem__(self, coords):
         row, column = coords
-        if not row > -1: return None
-        if not row < self.rows: return None
-        if not column > -1: return None
+        if not row > -1:              return None
+        if not row < self.rows:       return None
+        if not column > -1:           return None
         if not column < self.columns: return None
 
         return self.grid[row][column]
@@ -84,14 +45,17 @@ class Grid():
     def each_cell(self):
         return iter([ cell for row in self.grid for cell in row ])
 
+    def contents_of(self, cell):
+        return '   '
+
     def __repr__(self):
         output = '+' + '---+' * self.columns + '\n'
         for row in self:
             top = '|'
             bottom = '+'
-            
+
             for cell in row:
-                body = '   '
+                body = self.contents_of(cell)
                 east = ' ' if cell.is_linked(cell.east) else '|'
                 top += body + east
                 south = '   ' if cell.is_linked(cell.south) else '---'
@@ -101,18 +65,3 @@ class Grid():
             output += bottom + '\n'
 
         return output
-
-def binary_tree(grid):
-    for cell in grid.each_cell():
-        neighbors = []
-        if cell.north: neighbors.append(cell.north)
-        if cell.east:  neighbors.append(cell.east)
-
-        if len(neighbors) > 0:
-            neighbor = neighbors[randint(0, len(neighbors) - 1)]
-            if neighbor != None: cell.link(neighbor)
-    
-if __name__ == '__main__':
-    g = Grid(30, 30)
-    binary_tree(g)
-    print(g)
