@@ -2,6 +2,7 @@
 
 from mazes import *
 import argparse
+import sys
 from distutils.util import strtobool
 
 default_rows               = 25
@@ -11,6 +12,10 @@ default_start_row          = 0
 default_start_column       = 0
 default_destination_row    = default_rows - 1
 default_destination_column = default_columns - 1
+algorithms = {
+    'binarytree': build_bt_maze,
+    'sidewinder': build_sidewinder_maze
+    }
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-r', '--rows',
@@ -58,17 +63,25 @@ parser.add_argument('-p', '--show-path',
 args = parser.parse_args()
 if args.show_path:
     args.show_distances = True
-if args.start_row < 0: args.start_row = 0
-if args.start_row >= args.rows: args.start_row = args.rows - 1
-if args.start_column < 0: args.start_column = 0
-if args.start_column >= args.columns: args.start_column = args.columns -1
-if args.destination_row < 0: args.destination_row = 0
-if args.destination_row >= args.rows: args.destination_row = args.rows - 1
-if args.destination_column < 0: args.destination_column = 0
-if args.destination_column >= args.columns: args.destination_column = args.columns -1
-algorithm = build_bt_maze
-if args.algorithm == 'sidewinder':
-    algorithm = build_sidewinder_maze
+
+messages = []
+if args.start_row < 0 or args.start_row >= args.rows:
+    messages.append('Bad start row value.')
+if args.start_column < 0 or args.start_column > args.columns:
+    messages.append('Bad start column value.')
+if args.destination_row < 0 or args.destination_row >= args.rows:
+    messages.append('Bad destination row value.')
+if args.destination_column < 0 or args.destination_column >= args.columns:
+    messages.append('Bad destination column value.')
+if len(messages) > 0:
+    print('Unable to comply:')
+    for message in messages:
+        print('    ' + message)
+    print(f'Rows for distances and path should be 0 through {args.rows - 1}.')
+    print(f'Columns for distances and path should be 0 through {args.columns - 1}.')
+    sys.exit(1)
+
+algorithm = algorithms[args.algorithm]
 
 if args.show_distances:
     grid = DistanceGrid(args.rows, args.columns)
