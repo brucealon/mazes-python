@@ -41,10 +41,7 @@ parser.add_argument('-C', '--start-column',
                     default=default_start_column)
 parser.add_argument('-d', '--show-distances',
                     help='Show the distances from Row and Column arguments.',
-                    const=True,
-                    default=False,
-                    type=strtobool,
-                    nargs='?')
+                    action='store_true')
 parser.add_argument('-y', '--destination-row',
                     help=f'Destination row for path display (default {default_destination_row}). Requires -p.',
                     type=int,
@@ -55,10 +52,8 @@ parser.add_argument('-x', '--destination-column',
                     default=default_destination_column)
 parser.add_argument('-p', '--show-path',
                     help='Show path from start to destination. Implies -d.',
-                    const=True,
-                    default=False,
-                    type=strtobool,
-                    nargs='?')
+                    action='store_true')
+parser.set_defaults(show_distances=False, show_path=False)
 
 args = parser.parse_args()
 if args.show_path:
