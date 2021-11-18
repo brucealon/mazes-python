@@ -31,3 +31,14 @@ class Distances:
                     current = link
                     break
         return breadcrumbs
+
+    def max(self):
+        max_distance = 0
+        max_cell = self.root
+
+        for cell, distance in self.cell_dict.items():
+            if distance > max_distance:
+                max_cell = cell
+                max_distance = distance
+
+        return (max_cell, max_distance)

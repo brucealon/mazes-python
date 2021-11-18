@@ -26,3 +26,15 @@ class DistanceGrid(Grid):
         if not self.distances:
             raise NoStartingPointException('Must first calculate distances from a starting point.')
         self.distances = self.distances.path_to(goal)
+
+    def max(self):
+        if not self.distances:
+            raise NoStartingPointException('Must first calculate distances from a starting point.')
+        return self.distances.max()
+
+    def longest_path(self):
+        self.distances = self[0,0].distances()
+        (cell, distance) = self.distances.max()
+        self.distances = cell.distances()
+        (cell, distance) = self.distances.max()
+        self.distances = self.distances.path_to(cell)
