@@ -12,8 +12,9 @@ default_start_column       = 0
 default_destination_row    = default_rows - 1
 default_destination_column = default_columns - 1
 algorithms = {
-    'binarytree': build_bt_maze,
-    'sidewinder': build_sidewinder_maze
+    'binarytree':    build_bt_maze,
+    'sidewinder':    build_sidewinder_maze,
+    'aldous-broder': build_aldous_broder_maze
     }
 
 def parse_arguments():
@@ -22,7 +23,7 @@ def parse_arguments():
                         help=f'Choose the algorithm used to build the maze (default {default_algorithm}).',
                         type=str,
                         default=default_algorithm,
-                        choices=['binarytree', 'sidewinder'])
+                        choices=['binarytree', 'sidewinder', 'aldous-broder'])
 
     parser.add_argument('-H', '--rows',
                         help=f'Set the number of maze rows (default {default_rows}).',

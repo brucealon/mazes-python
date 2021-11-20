@@ -1,4 +1,6 @@
 
+from random import randint
+
 from .cell import Cell
 
 class Grid():
