@@ -1,8 +1,5 @@
 
-import random
-
-def sample(array):
-    return random.sample(array, 1)[0]
+from .helpers import sample
 
 def build_wilson_maze(grid):
     unvisited = []
