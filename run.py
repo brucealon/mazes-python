@@ -6,16 +6,11 @@ import sys
 
 default_rows               = 25
 default_columns            = 25
-default_algorithm          = 'binarytree'
+default_algorithm          = list(algorithms.keys())[0]
 default_start_row          = 0
 default_start_column       = 0
 default_destination_row    = default_rows - 1
 default_destination_column = default_columns - 1
-algorithms = {
-    'binarytree':    build_bt_maze,
-    'sidewinder':    build_sidewinder_maze,
-    'aldous-broder': build_aldous_broder_maze
-    }
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
@@ -23,7 +18,7 @@ def parse_arguments():
                         help=f'Choose the algorithm used to build the maze (default {default_algorithm}).',
                         type=str,
                         default=default_algorithm,
-                        choices=['binarytree', 'sidewinder', 'aldous-broder'])
+                        choices=list(algorithms.keys()))
 
     parser.add_argument('-H', '--rows',
                         help=f'Set the number of maze rows (default {default_rows}).',
@@ -99,6 +94,7 @@ if __name__ == '__main__':
     args = parse_arguments()
     validate_arguments(args)
 
+    print(f'Generating with {args.algorithm} algorithm.')
     algorithm = algorithms[args.algorithm]
 
     if args.show_distances:
