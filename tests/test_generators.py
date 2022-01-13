@@ -29,3 +29,10 @@ class TestGenerators:
         distances = grid[0,0].distances()
         for cell in grid.each_cell():
             assert distances[cell] >= 0
+
+    def test_hunt_and_kill(self):
+        grid = Grid(25, 25)
+        build_hk_maze(grid)
+        distances = grid[0,0].distances()
+        for cell in grid.each_cell():
+            assert distances[cell] >= 0
